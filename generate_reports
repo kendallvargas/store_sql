@@ -1,0 +1,39 @@
+SELECT * FROM encabezado;
+
+-- ✔ Generate reports that show the current status of each invoice and the associated products, grouped by their status: pending, paid or cancelled.
+SELECT e.numero_factura, cedula_comprador, total_pagar, ef.nombre, sum(cantidad_producto) as 'Quantity of product on the invoice' FROM encabezado e
+INNER JOIN estados_factura ef
+ON e.estado_factura_id = ef.estado_factura_id
+INNER JOIN detalle_producto dp
+ON e.numero_factura = dp.numero_factura
+INNER JOIN productos p 
+ON dp.producto_id = p.producto_id
+
+group by numero_factura
+;
+
+-- ✔ View the quantity and type of products sold as part of each invoice.
+
+SELECT e.numero_factura, concat("Name: " , cl.nombre ," ID: " , cl.cedula) as 'Client`s information', total_pagar, ef.nombre, cantidad_producto, c.nombre_Categoria as 'Type of product' FROM encabezado e
+INNER JOIN estados_factura ef
+ON e.estado_factura_id = ef.estado_factura_id
+INNER JOIN detalle_producto dp
+ON e.numero_factura = dp.numero_factura
+INNER JOIN productos p 
+ON dp.producto_id = p.producto_id
+INNER JOIN categorias c
+ON p.categoria_id = c.categoria_id
+INNER JOIN cliente cl
+ON e.cedula_comprador = cl.cedula
+;
+
+
+
+-- ✔ Identify the invoices that were generated as a result of sales in each store.
+
+SELECT t.tienda_id, count(numero_factura) as 'number of invoices' FROM encabezado e
+INNER JOIN tienda t
+ON t.tienda_id = e.tienda_id
+group by tienda_id
+
+;
