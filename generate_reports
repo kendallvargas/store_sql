@@ -1,6 +1,6 @@
 SELECT * FROM encabezado;
 
--- ✔ Generate reports that show the current status of each invoice and the associated products, grouped by their status: pending, paid or cancelled.
+-- ✔ Generate reports that show the current status of each invoice, grouped by their status: pending, paid or cancelled.
 SELECT e.numero_factura, cedula_comprador, total_pagar, ef.nombre, sum(cantidad_producto) as 'Quantity of product on the invoice' FROM encabezado e
 INNER JOIN estados_factura ef
 ON e.estado_factura_id = ef.estado_factura_id
